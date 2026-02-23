@@ -4,6 +4,7 @@ HR management web app for leave requests, attendance tracking, and manager appro
 
 ## Sprint 1 Status
 - BL-001 implemented: FastAPI skeleton with modular monolith layout.
+- BL-002 implemented: SQLAlchemy foundation and Alembic baseline migration.
 
 ## Documentation
 - Project plan: `docs/PROJECT_PLAN.md`
@@ -18,11 +19,13 @@ HR management web app for leave requests, attendance tracking, and manager appro
    - `.\.venv\Scripts\Activate.ps1`
 3. Install dependencies:
    - `pip install -r requirements.txt`
-4. Run API server:
+4. Run migrations:
+   - `alembic upgrade head`
+5. Run API server:
    - `uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`
-5. Open app:
+6. Open app:
    - `http://127.0.0.1:8000/`
-6. Run tests:
+7. Run tests:
    - `pytest`
 
 ## Notes About Diagram Rendering
