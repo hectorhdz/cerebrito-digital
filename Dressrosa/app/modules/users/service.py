@@ -191,3 +191,14 @@ def assign_manager_to_user(db: Session, user_id: str, manager_id: str | None) ->
     user.manager_id = manager.id
     db.commit()
     return True
+
+
+def set_user_active_status(db: Session, user_id: str, active: bool) -> User | None:
+    user = get_user(db, user_id)
+    if user is None:
+        return None
+
+    user.active = active
+    db.commit()
+    db.refresh(user)
+    return user
