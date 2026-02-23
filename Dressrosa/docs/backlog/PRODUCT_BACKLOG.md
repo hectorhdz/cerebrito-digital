@@ -24,7 +24,7 @@
 |---|---|---|---|---|---|
 | BL-006 | Users and Access | User CRUD | User CRUD for HR/Admin. | Completed | Added API + web user CRUD with HR/Admin role protection |
 | BL-007 | Users and Access | Role assignment | Role assignment management. | Completed | Added API + web role assignment/removal management for HR/Admin |
-| BL-008 | Users and Access | Org mapping | Manager-employee relationship management. | Planned | Not started |
+| BL-008 | Users and Access | Org mapping | Manager-employee relationship management. | Completed | Added users.manager_id mapping with migration, API, and web manager assignment |
 | BL-009 | Users and Access | Profile endpoints | Profile and account status endpoints. | Planned | Not started |
 
 ## Sprint 4

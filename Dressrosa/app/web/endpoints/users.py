@@ -10,8 +10,10 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db_session
 from app.modules.auth.dependencies import require_web_roles
 from app.modules.users.service import (
+    ManagerAssignmentError,
     RoleNotFoundError,
     UserAlreadyExistsError,
+    assign_manager_to_user,
     assign_role_to_user,
     create_user,
     delete_user,
@@ -31,11 +33,13 @@ def _users_page_context(db: Session, current_user, error: str | None = None) -> 
     users = list_users(db)
     roles = list_roles(db)
     user_roles = {user.id: get_user_role_names(db, user.id) for user in users}
+    managers = [u for u in users if u.active and u.id != current_user.id]
     return {
         "title": "User Management",
         "users": users,
         "roles": roles,
         "user_roles": user_roles,
+        "managers": managers,
         "current_user": current_user,
         "error": error,
     }
@@ -62,6 +66,7 @@ def users_create(
     full_name: str = Form(...),
     password: str = Form(...),
     active: bool = Form(False),
+    manager_id: str | None = Form(default=None),
     current_user=Depends(require_web_roles("hr", "admin")),
     db: Session = Depends(get_db_session),
 ) -> HTMLResponse:
@@ -73,6 +78,7 @@ def users_create(
             full_name=full_name,
             password=password,
             active=active,
+            manager_id=manager_id,
         )
     except UserAlreadyExistsError as exc:
         return templates.TemplateResponse(
@@ -102,7 +108,7 @@ def users_assign_role(
     role_name: str = Form(...),
     current_user=Depends(require_web_roles("hr", "admin")),
     db: Session = Depends(get_db_session),
- ) -> Response:
+) -> Response:
     try:
         ok = assign_role_to_user(db, user_id=user_id, role_name=role_name)
     except RoleNotFoundError as exc:
@@ -131,7 +137,7 @@ def users_remove_role(
     role_name: str,
     current_user=Depends(require_web_roles("hr", "admin")),
     db: Session = Depends(get_db_session),
- ) -> Response:
+) -> Response:
     try:
         ok = remove_role_from_user(db, user_id=user_id, role_name=role_name)
     except RoleNotFoundError as exc:
@@ -152,3 +158,31 @@ def users_remove_role(
 
     return RedirectResponse(url="/users", status_code=303)
 
+
+@router.post("/users/{user_id}/manager")
+def users_assign_manager(
+    request: Request,
+    user_id: str,
+    manager_id: str = Form(default=""),
+    current_user=Depends(require_web_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> Response:
+    try:
+        ok = assign_manager_to_user(db, user_id=user_id, manager_id=(manager_id or None))
+    except ManagerAssignmentError as exc:
+        return templates.TemplateResponse(
+            request=request,
+            name="users.html",
+            context=_users_page_context(db, current_user, error=str(exc)),
+            status_code=400,
+        )
+
+    if not ok:
+        return templates.TemplateResponse(
+            request=request,
+            name="users.html",
+            context=_users_page_context(db, current_user, error="User not found"),
+            status_code=404,
+        )
+
+    return RedirectResponse(url="/users", status_code=303)

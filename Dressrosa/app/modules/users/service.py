@@ -1,4 +1,4 @@
-﻿"""User management service for HR/Admin CRUD and role assignment operations."""
+﻿"""User management service for HR/Admin CRUD, role assignment, and org mapping."""
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -14,6 +14,10 @@ class UserAlreadyExistsError(Exception):
 
 
 class RoleNotFoundError(Exception):
+    pass
+
+
+class ManagerAssignmentError(Exception):
     pass
 
 
@@ -70,6 +74,7 @@ def create_user(
     full_name: str,
     password: str,
     active: bool = True,
+    manager_id: str | None = None,
 ) -> User:
     _ensure_unique_fields(db, username=username, email=email)
 
@@ -79,6 +84,7 @@ def create_user(
         full_name=full_name.strip(),
         password_hash=hash_password(password),
         active=active,
+        manager_id=manager_id,
     )
     db.add(user)
     db.commit()
@@ -93,6 +99,7 @@ def update_user(
     email: str,
     full_name: str,
     active: bool,
+    manager_id: str | None,
     password: str | None = None,
 ) -> User | None:
     user = get_user(db, user_id)
@@ -105,6 +112,7 @@ def update_user(
     user.email = email.strip().lower()
     user.full_name = full_name.strip()
     user.active = active
+    user.manager_id = manager_id
     if password:
         user.password_hash = hash_password(password)
 
@@ -159,5 +167,27 @@ def remove_role_from_user(db: Session, user_id: str, role_name: str) -> bool:
         return True
 
     db.delete(mapping)
+    db.commit()
+    return True
+
+
+def assign_manager_to_user(db: Session, user_id: str, manager_id: str | None) -> bool:
+    user = get_user(db, user_id)
+    if user is None:
+        return False
+
+    if manager_id in (None, ""):
+        user.manager_id = None
+        db.commit()
+        return True
+
+    if manager_id == user_id:
+        raise ManagerAssignmentError("User cannot be their own manager")
+
+    manager = get_user(db, manager_id)
+    if manager is None or not manager.active:
+        raise ManagerAssignmentError("Manager user not found or inactive")
+
+    user.manager_id = manager.id
     db.commit()
     return True
