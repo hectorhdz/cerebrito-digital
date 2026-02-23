@@ -1,0 +1,25 @@
+﻿@startuml
+!theme plain
+
+title Dressrosa - System Context
+
+actor Employee
+actor Manager
+actor HR
+actor Admin
+
+rectangle "Dressrosa Web App" {
+  component "Web UI\n(Jinja2 + HTMX)" as UI
+  component "FastAPI Backend" as API
+  database "SQLite DB" as DB
+}
+
+Employee --> UI : Request leave\nClock in/out\nView status
+Manager --> UI : Review team requests
+HR --> UI : Override approvals\nMonitor leaves
+Admin --> UI : Manage users/policies
+
+UI --> API : HTTP requests
+API --> DB : Read/Write
+
+@enduml

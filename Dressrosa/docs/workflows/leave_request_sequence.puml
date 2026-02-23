@@ -1,0 +1,41 @@
+﻿@startuml
+!theme plain
+
+title Leave Request Workflow - Sequence
+
+actor Employee
+participant "Web UI" as UI
+participant "Leave Service" as LS
+participant "Approval Service" as AS
+participant "Balance Service" as BS
+database "SQLite" as DB
+actor Manager
+actor HR
+
+Employee -> UI : Submit leave request
+UI -> LS : create_leave_request(...)
+LS -> DB : insert leave_requests(status=pending)
+LS -> BS : reserve_balance_if_applicable(...)
+BS -> DB : insert leave_balance_events(reservation)
+LS -> DB : insert audit_logs
+LS --> UI : request created
+
+Manager -> UI : Approve/Decline request
+UI -> AS : decision(request_id, action)
+AS -> DB : insert leave_approval_actions(role_used=manager)
+AS -> DB : update leave_requests.status
+AS -> BS : consume_or_reverse_balance(...)
+BS -> DB : insert leave_balance_events(...)
+AS -> DB : insert audit_logs
+AS --> UI : decision persisted
+
+HR -> UI : Override decision (optional)
+UI -> AS : override_decision(request_id, action, reason)
+AS -> DB : insert leave_approval_actions(role_used=hr, action=override)
+AS -> DB : update leave_requests.status
+AS -> BS : reconcile_balance(...)
+BS -> DB : insert leave_balance_events(reversal/consumption)
+AS -> DB : insert audit_logs
+AS --> UI : override persisted
+
+@enduml

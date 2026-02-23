@@ -1,0 +1,136 @@
+﻿@startuml
+!theme plain
+
+title Dressrosa - ER Diagram (Initial)
+
+entity users {
+  * id : uuid <<PK>>
+  --
+  username : string <<UNIQUE>>
+  password_hash : string
+  full_name : string
+  email : string
+  active : bool
+  created_at : datetime
+}
+
+entity roles {
+  * id : uuid <<PK>>
+  --
+  name : string <<UNIQUE>>
+}
+
+entity user_roles {
+  * user_id : uuid <<FK>>
+  * role_id : uuid <<FK>>
+}
+
+entity employee_profiles {
+  * user_id : uuid <<PK,FK>>
+  --
+  manager_id : uuid <<FK users.id>>
+  default_work_mode : string
+}
+
+entity leave_types {
+  * id : uuid <<PK>>
+  --
+  code : string <<UNIQUE>>
+  name : string
+}
+
+entity leave_subtypes {
+  * id : uuid <<PK>>
+  --
+  leave_type_id : uuid <<FK>>
+  code : string
+  name : string
+  unique(leave_type_id, code)
+}
+
+entity leave_requests {
+  * id : uuid <<PK>>
+  --
+  employee_id : uuid <<FK users.id>>
+  leave_subtype_id : uuid <<FK>>
+  start_date : date
+  end_date : date
+  status : string
+  comment : text
+  created_at : datetime
+}
+
+entity leave_approval_actions {
+  * id : uuid <<PK>>
+  --
+  leave_request_id : uuid <<FK>>
+  actor_id : uuid <<FK users.id>>
+  role_used : string
+  action : string
+  reason : text
+  created_at : datetime
+}
+
+entity leave_balance_events {
+  * id : uuid <<PK>>
+  --
+  employee_id : uuid <<FK users.id>>
+  leave_subtype_id : uuid <<FK>>
+  leave_request_id : uuid <<FK nullable>>
+  event_type : string
+  units_days : decimal
+  effective_date : date
+  created_at : datetime
+}
+
+entity attendance_records {
+  * id : uuid <<PK>>
+  --
+  employee_id : uuid <<FK users.id>>
+  work_date : date
+  work_mode : string
+  clock_in_at : datetime
+  clock_out_at : datetime
+  unique(employee_id, work_date)
+}
+
+entity attendance_edits {
+  * id : uuid <<PK>>
+  --
+  attendance_record_id : uuid <<FK>>
+  editor_id : uuid <<FK users.id>>
+  old_clock_in_at : datetime
+  new_clock_in_at : datetime
+  old_clock_out_at : datetime
+  new_clock_out_at : datetime
+  reason : text
+  created_at : datetime
+}
+
+entity audit_logs {
+  * id : uuid <<PK>>
+  --
+  actor_id : uuid <<FK users.id>>
+  entity_type : string
+  entity_id : uuid
+  action : string
+  payload_json : text
+  created_at : datetime
+}
+
+users ||--o{ user_roles
+roles ||--o{ user_roles
+users ||--|| employee_profiles
+users ||--o{ leave_requests
+leave_types ||--o{ leave_subtypes
+leave_subtypes ||--o{ leave_requests
+leave_requests ||--o{ leave_approval_actions
+users ||--o{ leave_approval_actions
+users ||--o{ leave_balance_events
+leave_subtypes ||--o{ leave_balance_events
+users ||--o{ attendance_records
+attendance_records ||--o{ attendance_edits
+users ||--o{ attendance_edits
+users ||--o{ audit_logs
+
+@enduml
