@@ -1,0 +1,61 @@
+﻿@startuml
+!theme plain
+
+title Dressrosa - Component Diagram
+
+package "Web Layer" {
+  [Auth Pages]
+  [Employee Pages]
+  [Manager Pages]
+  [HR/Admin Pages]
+}
+
+package "API Layer (/api/v1)" {
+  [Auth API]
+  [Users API]
+  [Attendance API]
+  [Leaves API]
+  [Approvals API]
+  [Reports API]
+}
+
+package "Application Services" {
+  [Auth Service]
+  [User Service]
+  [Attendance Service]
+  [Leave Service]
+  [Approval Service]
+  [Reporting Service]
+  [Audit Service]
+}
+
+package "Persistence" {
+  [Repositories]
+  database "SQLite"
+}
+
+[Auth Pages] --> [Auth Service]
+[Employee Pages] --> [Attendance Service]
+[Employee Pages] --> [Leave Service]
+[Manager Pages] --> [Approval Service]
+[HR/Admin Pages] --> [Approval Service]
+[HR/Admin Pages] --> [Reporting Service]
+
+[Auth API] --> [Auth Service]
+[Users API] --> [User Service]
+[Attendance API] --> [Attendance Service]
+[Leaves API] --> [Leave Service]
+[Approvals API] --> [Approval Service]
+[Reports API] --> [Reporting Service]
+
+[Auth Service] --> [Repositories]
+[User Service] --> [Repositories]
+[Attendance Service] --> [Repositories]
+[Leave Service] --> [Repositories]
+[Approval Service] --> [Repositories]
+[Reporting Service] --> [Repositories]
+[Audit Service] --> [Repositories]
+
+[Repositories] --> "SQLite"
+
+@enduml

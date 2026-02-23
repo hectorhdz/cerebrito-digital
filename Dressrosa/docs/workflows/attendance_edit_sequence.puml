@@ -1,0 +1,36 @@
+﻿@startuml
+!theme plain
+
+title Attendance Edit Workflow - Sequence
+
+actor Employee
+participant "Web UI" as UI
+participant "Attendance Service" as ATS
+database "SQLite" as DB
+actor Manager
+actor HR
+
+Employee -> UI : Clock in
+UI -> ATS : clock_in(employee_id, work_date, time)
+ATS -> DB : upsert attendance_records(clock_in_at)
+ATS -> DB : insert audit_logs
+
+Employee -> UI : Clock out
+UI -> ATS : clock_out(employee_id, work_date, time)
+ATS -> DB : update attendance_records(clock_out_at)
+ATS -> DB : insert audit_logs
+
+Manager -> UI : Correct attendance (authorized)
+UI -> ATS : edit_attendance(record_id, new_times, reason)
+ATS -> DB : insert attendance_edits(old/new values)
+ATS -> DB : update attendance_records
+ATS -> DB : insert audit_logs
+ATS --> UI : correction applied
+
+HR -> UI : Correct attendance (supervision)
+UI -> ATS : edit_attendance(...)
+ATS -> DB : insert attendance_edits
+ATS -> DB : update attendance_records
+ATS -> DB : insert audit_logs
+
+@enduml
