@@ -3,7 +3,10 @@
 {% block content %}
 <section class="card">
   <h1>Dressrosa</h1>
-  <p>HR management web app scaffold is running.</p>
+  <p>Welcome, <strong>{{ user.full_name }}</strong>.</p>
   <p>Health endpoint: <code>/api/v1/health</code></p>
+  <form method="post" action="/logout">
+    <button type="submit">Logout</button>
+  </form>
 </section>
 {% endblock %}

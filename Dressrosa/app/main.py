@@ -3,6 +3,7 @@
 import logging
 
 from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
 
 from app.api.router import router as api_router
 from app.core.config import get_settings
@@ -17,6 +18,14 @@ def create_app() -> FastAPI:
     configure_logging(settings)
 
     app = FastAPI(title=settings.app_name, version=settings.app_version, debug=settings.debug)
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=settings.secret_key,
+        session_cookie=settings.session_cookie_name,
+        max_age=settings.access_token_expire_minutes * 60,
+        same_site="lax",
+        https_only=(settings.environment == "production"),
+    )
 
     app.include_router(web_router)
     app.include_router(api_router)

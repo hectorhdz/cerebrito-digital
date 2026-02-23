@@ -2,10 +2,9 @@
 
 HR management web app for leave requests, attendance tracking, and manager approvals.
 
-## Sprint 1 Status
-- BL-001 implemented: FastAPI skeleton with modular monolith layout.
-- BL-002 implemented: SQLAlchemy foundation and Alembic baseline migration.
-- BL-003 implemented: environment-separated configuration and centralized logging.
+## Sprint Status
+- Sprint 1: BL-001, BL-002, BL-003 implemented.
+- Sprint 2: BL-004 implemented (BL-010 pending).
 
 ## Documentation
 - Project plan: `docs/PROJECT_PLAN.md`
@@ -61,6 +60,15 @@ Run all commands from repository root (`c:\Users\webit\Documents\Github\cerebrit
    - `http://127.0.0.1:8000/api/v1/health/db`
 12. Run tests:
    - `pytest`
+
+## Auth Endpoints (BL-004)
+- API token login: `POST /api/v1/auth/token` with form fields `username` and `password`
+- API current user: `GET /api/v1/auth/me` with `Authorization: Bearer <token>`
+- Web login page: `GET /login`
+- Web login submit: `POST /login`
+- Web logout: `POST /logout`
+
+Token/session duration is configured at `ACCESS_TOKEN_EXPIRE_MINUTES` and defaults to 120 minutes.
 
 ## Common Windows Troubleshooting
 - If `py` is not recognized: reinstall Python and enable "Add Python to PATH".
