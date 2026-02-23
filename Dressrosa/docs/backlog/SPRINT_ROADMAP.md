@@ -3,7 +3,7 @@
 | Sprint | Goal | Deliverables | Verification | Status | Notes |
 |---|---|---|---|---|---|
 | Sprint 0 | Planning baseline | Project plan; architecture UML; ER diagram; workflow sequence diagrams; product backlog; sprint roadmap | Docs present and reviewed | Completed | Committed in `15aa64f` |
-| Sprint 1 | Project bootstrap | FastAPI app skeleton; config/dependency management; SQLAlchemy base models; Alembic init; health endpoint; base layout page | App boots locally; initial migration applies | In Progress | BL-001 and BL-002 completed in this branch |
+| Sprint 1 | Project bootstrap | FastAPI app skeleton; config/dependency management; SQLAlchemy base models; Alembic init; health endpoint; base layout page | App boots locally; initial migration applies | In Progress | BL-001, BL-002, and BL-003 completed in this branch |
 | Sprint 2 | Auth and roles | Login/logout; password hashing; session auth; API token/JWT auth; role guards | Protected endpoints enforce roles; auth tests pass | Planned | Depends on Sprint 1 |
 | Sprint 3 | Users and organization | User CRUD; role assignment; employee-manager mapping | Admin/HR user management works; relationships query correctly | Planned | Depends on Sprint 2 |
 | Sprint 4 | Leave taxonomy and requests | Leave types/subtypes CRUD; leave request submit/list; request state transitions | Employee can submit requests; status updates correctly | Planned | Depends on Sprint 3 |
