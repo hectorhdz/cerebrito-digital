@@ -5,7 +5,7 @@ HR management web app for leave requests, attendance tracking, and manager appro
 ## Sprint Status
 - Sprint 1: BL-001, BL-002, BL-003 implemented.
 - Sprint 2: BL-004, BL-005, and BL-010 implemented.
-- Sprint 3: BL-006 and BL-007 implemented (BL-008/BL-009 pending).
+- Sprint 3: BL-006, BL-007, BL-008, and BL-009 implemented.
 
 ## Documentation
 - Project plan: `docs/PROJECT_PLAN.md`
@@ -91,7 +91,7 @@ Change this password immediately in non-local environments.
   - `GET /portal/hr`
   - `GET /portal/admin`
 
-## User CRUD and Role Assignment Endpoints (BL-006/BL-007)
+## User CRUD, Role Assignment, Org Mapping, and Profile Endpoints (BL-006/BL-007/BL-008/BL-009)
 - API (HR/Admin only):
   - `GET /api/v1/users`
   - `POST /api/v1/users`
@@ -101,12 +101,23 @@ Change this password immediately in non-local environments.
   - `GET /api/v1/users/roles`
   - `POST /api/v1/users/{user_id}/roles`
   - `DELETE /api/v1/users/{user_id}/roles/{role_name}`
+  - `PUT /api/v1/users/{user_id}/manager`
 - Web (HR/Admin only):
   - `GET /users`
   - `POST /users`
   - `POST /users/{user_id}/delete`
   - `POST /users/{user_id}/roles`
   - `POST /users/{user_id}/roles/{role_name}/remove`
+  - `POST /users/{user_id}/manager`
+
+
+## Profile and Account Status Endpoints (BL-009)
+- API:
+  - GET /api/v1/profile/me
+  - GET /api/v1/profile/{user_id}/status
+  - PUT /api/v1/profile/{user_id}/status
+- Web:
+  - GET /profile
 
 Role inheritance enabled by default:
 - `admin` inherits `hr`, `manager`, `employee`
@@ -126,3 +137,5 @@ For known installation/runtime issues, see `troubleshooting/common_issues.md`.
 ## Notes About Diagram Rendering
 The rendered diagrams in `docs/Architecture.md` use the PlantUML proxy service and fetch source from this repository.
 If the default branch changes, update the branch name in diagram URLs.
+
+

@@ -14,6 +14,8 @@ This file tracks test cases that were executed, including outcome and context.
 | TC-BL010-001 | Role hierarchy expansion test | Validate admin/hr/manager inheritance logic for role guards. | `python -m pytest tests/test_role_guards.py -q` | Not Run | Added tests; pending execution in fully prepared local environment. |
 | TC-BL006-001 | User service CRUD wiring test | Validate BL-006 user CRUD service functions are present and import correctly. | `python -m pytest tests/test_user_crud.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
 | TC-BL007-001 | Role assignment wiring test | Validate BL-007 role assignment service functions are present and import correctly. | `python -m pytest tests/test_role_assignment.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
+| TC-BL008-001 | Manager mapping wiring test | Validate BL-008 manager mapping service functions are present and import correctly. | `python -m pytest tests/test_org_mapping.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
+| TC-BL009-001 | Profile/account status endpoint wiring test | Validate BL-009 profile and account-status endpoint functions are present and import correctly. | `python -m pytest tests/test_profile_endpoints.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
 
 ## Notes
 - Automated tests exist in `tests/`.
