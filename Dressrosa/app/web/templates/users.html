@@ -1,0 +1,61 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <h1>User Management</h1>
+  <p>Signed in as <strong>{{ current_user.full_name }}</strong></p>
+
+  {% if error %}
+  <p style="color:#a12d2f;">{{ error }}</p>
+  {% endif %}
+
+  <h2>Create User</h2>
+  <form method="post" action="/users">
+    <label for="username">Username</label><br />
+    <input id="username" name="username" type="text" required /><br /><br />
+
+    <label for="email">Email</label><br />
+    <input id="email" name="email" type="email" required /><br /><br />
+
+    <label for="full_name">Full Name</label><br />
+    <input id="full_name" name="full_name" type="text" required /><br /><br />
+
+    <label for="password">Password</label><br />
+    <input id="password" name="password" type="password" required /><br /><br />
+
+    <label>
+      <input type="checkbox" name="active" checked /> Active
+    </label><br /><br />
+
+    <button type="submit">Create User</button>
+  </form>
+
+  <h2>Existing Users</h2>
+  <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Active</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ "Yes" if user.active else "No" }}</td>
+        <td>
+          <form method="post" action="/users/{{ user.id }}/delete" onsubmit="return confirm('Delete user {{ user.username }}?')">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

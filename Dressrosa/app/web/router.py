@@ -2,8 +2,9 @@
 
 from fastapi import APIRouter
 
-from app.web.endpoints import auth, home
+from app.web.endpoints import auth, home, users
 
 router = APIRouter()
 router.include_router(auth.router)
 router.include_router(home.router)
+router.include_router(users.router)

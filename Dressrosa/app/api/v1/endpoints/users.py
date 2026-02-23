@@ -1,0 +1,149 @@
+﻿"""User API endpoints for HR/Admin user CRUD."""
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, EmailStr, Field
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db_session
+from app.modules.auth.dependencies import require_api_roles
+from app.modules.users.service import (
+    UserAlreadyExistsError,
+    create_user,
+    delete_user,
+    get_user,
+    list_users,
+    update_user,
+)
+
+router = APIRouter(prefix="/users")
+
+
+class UserCreateRequest(BaseModel):
+    username: str = Field(min_length=3, max_length=50)
+    email: EmailStr
+    full_name: str = Field(min_length=2, max_length=120)
+    password: str = Field(min_length=6, max_length=128)
+    active: bool = True
+
+
+class UserUpdateRequest(BaseModel):
+    username: str = Field(min_length=3, max_length=50)
+    email: EmailStr
+    full_name: str = Field(min_length=2, max_length=120)
+    password: str | None = Field(default=None, min_length=6, max_length=128)
+    active: bool
+
+
+class UserResponse(BaseModel):
+    id: str
+    username: str
+    email: EmailStr
+    full_name: str
+    active: bool
+
+
+@router.get("", response_model=list[UserResponse])
+def api_list_users(
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> list[UserResponse]:
+    users = list_users(db)
+    return [
+        UserResponse(
+            id=user.id,
+            username=user.username,
+            email=user.email,
+            full_name=user.full_name,
+            active=user.active,
+        )
+        for user in users
+    ]
+
+
+@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+def api_create_user(
+    payload: UserCreateRequest,
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> UserResponse:
+    try:
+        user = create_user(
+            db,
+            username=payload.username,
+            email=str(payload.email),
+            full_name=payload.full_name,
+            password=payload.password,
+            active=payload.active,
+        )
+    except UserAlreadyExistsError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        full_name=user.full_name,
+        active=user.active,
+    )
+
+
+@router.get("/{user_id}", response_model=UserResponse)
+def api_get_user(
+    user_id: str,
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> UserResponse:
+    user = get_user(db, user_id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        full_name=user.full_name,
+        active=user.active,
+    )
+
+
+@router.put("/{user_id}", response_model=UserResponse)
+def api_update_user(
+    user_id: str,
+    payload: UserUpdateRequest,
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> UserResponse:
+    try:
+        user = update_user(
+            db,
+            user_id=user_id,
+            username=payload.username,
+            email=str(payload.email),
+            full_name=payload.full_name,
+            active=payload.active,
+            password=payload.password,
+        )
+    except UserAlreadyExistsError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        full_name=user.full_name,
+        active=user.active,
+    )
+
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def api_delete_user(
+    user_id: str,
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> None:
+    deleted = delete_user(db, user_id)
+    if not deleted:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")

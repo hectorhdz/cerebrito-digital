@@ -22,7 +22,7 @@
 ## Sprint 3
 | Backlog ID | Epic | Feature | Description | Status | Notes |
 |---|---|---|---|---|---|
-| BL-006 | Users and Access | User CRUD | User CRUD for HR/Admin. | Planned | Not started |
+| BL-006 | Users and Access | User CRUD | User CRUD for HR/Admin. | Completed | Added API + web user CRUD with HR/Admin role protection |
 | BL-007 | Users and Access | Role assignment | Role assignment management. | Planned | Not started |
 | BL-008 | Users and Access | Org mapping | Manager-employee relationship management. | Planned | Not started |
 | BL-009 | Users and Access | Profile endpoints | Profile and account status endpoints. | Planned | Not started |

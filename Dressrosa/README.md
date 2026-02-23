@@ -5,6 +5,7 @@ HR management web app for leave requests, attendance tracking, and manager appro
 ## Sprint Status
 - Sprint 1: BL-001, BL-002, BL-003 implemented.
 - Sprint 2: BL-004, BL-005, and BL-010 implemented.
+- Sprint 3: BL-006 implemented (BL-007/BL-008/BL-009 pending).
 
 ## Documentation
 - Project plan: `docs/PROJECT_PLAN.md`
@@ -89,6 +90,18 @@ Change this password immediately in non-local environments.
   - `GET /portal/manager`
   - `GET /portal/hr`
   - `GET /portal/admin`
+
+## User CRUD Endpoints (BL-006)
+- API (HR/Admin only):
+  - `GET /api/v1/users`
+  - `POST /api/v1/users`
+  - `GET /api/v1/users/{user_id}`
+  - `PUT /api/v1/users/{user_id}`
+  - `DELETE /api/v1/users/{user_id}`
+- Web (HR/Admin only):
+  - `GET /users`
+  - `POST /users`
+  - `POST /users/{user_id}/delete`
 
 Role inheritance enabled by default:
 - `admin` inherits `hr`, `manager`, `employee`
