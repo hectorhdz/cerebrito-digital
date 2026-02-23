@@ -1,0 +1,35 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Segoe UI, Arial, sans-serif;
+        background: linear-gradient(180deg, #f6f8fb 0%, #eef3f8 100%);
+        color: #10263a;
+      }
+      main {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #d9e2ec;
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      code {
+        background: #eef3f8;
+        padding: 0.15rem 0.4rem;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>
