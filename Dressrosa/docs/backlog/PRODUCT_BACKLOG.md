@@ -2,7 +2,7 @@
 
 | Backlog ID | Epic | Feature | Description | Target Sprint | Status | Notes |
 |---|---|---|---|---|---|---|
-| BL-001 | Platform Foundation | FastAPI skeleton | Initialize FastAPI project structure with modular monolith layout. | Sprint 1 | Planned | Not started |
+| BL-001 | Platform Foundation | FastAPI skeleton | Initialize FastAPI project structure with modular monolith layout. | Sprint 1 | Completed | Implemented on `dressrosa-sprint1` |
 | BL-002 | Platform Foundation | Data layer bootstrap | Configure SQLAlchemy models and Alembic migration baseline. | Sprint 1 | Planned | Not started |
 | BL-003 | Platform Foundation | App configuration | Implement configuration, logging, and environment separation. | Sprint 1 | Planned | Not started |
 | BL-004 | Platform Foundation | Auth primitives | Add password hashing, web session auth, and API token auth foundations. | Sprint 2 | Planned | Not started |
