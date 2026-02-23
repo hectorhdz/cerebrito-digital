@@ -1,4 +1,4 @@
-﻿# Dressrosa
+# Dressrosa
 
 HR management web app for leave requests, attendance tracking, and manager approvals.
 
@@ -12,6 +12,7 @@ HR management web app for leave requests, attendance tracking, and manager appro
 - Sprint roadmap: `docs/backlog/SPRINT_ROADMAP.md`
 - Architecture diagrams (rendered images): `docs/Architecture.md`
 - Test execution log: `docs/testing/TEST_EXECUTION_LOG.md`
+- Troubleshooting guide: `troubleshooting/common_issues.md`
 
 ## Installation Requirements (Windows)
 - Windows 10 or Windows 11
@@ -52,7 +53,7 @@ Run all commands from repository root (`c:\Users\webit\Documents\Github\cerebrit
 8. Apply database migrations:
    - `alembic upgrade head`
 9. Seed default data (roles + admin):
-   - `py -3 scripts/seed_initial_data.py`
+   - `python -m scripts.seed_initial_data`
 10. Run the application:
    - `uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`
 11. Open the app in browser:
@@ -78,6 +79,8 @@ Change this password immediately in non-local environments.
 - Web logout: `POST /logout`
 
 Token/session duration is configured at `ACCESS_TOKEN_EXPIRE_MINUTES` and defaults to 120 minutes.
+
+For known installation/runtime issues, see `troubleshooting/common_issues.md`.
 
 ## Common Windows Troubleshooting
 - If `py` is not recognized: reinstall Python and enable "Add Python to PATH".
