@@ -9,6 +9,7 @@ class Settings:
     app_name: str = os.getenv("APP_NAME", "Dressrosa")
     environment: str = os.getenv("ENVIRONMENT", "development")
     api_v1_prefix: str = "/api/v1"
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./dressrosa.db")
 
 
 settings = Settings()
