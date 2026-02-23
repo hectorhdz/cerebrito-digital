@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import access, auth, health, leave_subtypes, leave_types, profile, users
+from app.api.v1.endpoints import access, auth, health, leave_policies, leave_subtypes, leave_types, profile, users
 
 router = APIRouter(prefix="/api/v1")
 router.include_router(health.router, tags=["health"])
@@ -12,3 +12,4 @@ router.include_router(users.router, tags=["users"])
 router.include_router(profile.router, tags=["profile"])
 router.include_router(leave_types.router, tags=["leave-types"])
 router.include_router(leave_subtypes.router, tags=["leave-subtypes"])
+router.include_router(leave_policies.router, tags=["leave-policies"])
