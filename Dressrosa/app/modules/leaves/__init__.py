@@ -1,1 +1,1 @@
-﻿"""Module placeholder for future leaves domain logic."""
+"""Leaves domain module."""

@@ -16,6 +16,9 @@ This file tracks test cases that were executed, including outcome and context.
 | TC-BL007-001 | Role assignment wiring test | Validate BL-007 role assignment service functions are present and import correctly. | `python -m pytest tests/test_role_assignment.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
 | TC-BL008-001 | Manager mapping wiring test | Validate BL-008 manager mapping service functions are present and import correctly. | `python -m pytest tests/test_org_mapping.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
 | TC-BL009-001 | Profile/account status endpoint wiring test | Validate BL-009 profile and account-status endpoint functions are present and import correctly. | `python -m pytest tests/test_profile_endpoints.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
+| TC-BL011-001 | Leave types wiring test | Validate BL-011 leave type service and endpoint functions are present and import correctly. | `python -m pytest tests/test_leave_types.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
+| TC-BL012-001 | Leave subtypes wiring test | Validate BL-012 leave subtype service and endpoint functions are present and import correctly. | `python -m pytest tests/test_leave_subtypes.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
+| TC-BL013-001 | Leave policy wiring test | Validate BL-013 leave policy service and endpoint functions are present and import correctly. | `python -m pytest tests/test_leave_policies.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
 
 ## Notes
 - Automated tests exist in `tests/`.

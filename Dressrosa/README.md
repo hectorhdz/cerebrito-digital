@@ -6,6 +6,7 @@ HR management web app for leave requests, attendance tracking, and manager appro
 - Sprint 1: BL-001, BL-002, BL-003 implemented.
 - Sprint 2: BL-004, BL-005, and BL-010 implemented.
 - Sprint 3: BL-006, BL-007, BL-008, and BL-009 implemented.
+- Sprint 4: BL-011, BL-012, and BL-013 implemented.
 
 ## Documentation
 - Project plan: `docs/PROJECT_PLAN.md`
@@ -109,6 +110,32 @@ Change this password immediately in non-local environments.
   - `POST /users/{user_id}/roles`
   - `POST /users/{user_id}/roles/{role_name}/remove`
   - `POST /users/{user_id}/manager`
+
+## Leave Type Management Endpoints (BL-011)
+- API (HR/Admin only):
+  - `GET /api/v1/leave-types`
+  - `POST /api/v1/leave-types`
+  - `GET /api/v1/leave-types/{leave_type_id}`
+  - `PUT /api/v1/leave-types/{leave_type_id}`
+  - `DELETE /api/v1/leave-types/{leave_type_id}`
+
+## Leave Subtype Management Endpoints (BL-012)
+- API (HR/Admin only):
+  - `GET /api/v1/leave-subtypes`
+  - `GET /api/v1/leave-subtypes?leave_type_id={leave_type_id}`
+  - `POST /api/v1/leave-subtypes`
+  - `GET /api/v1/leave-subtypes/{leave_subtype_id}`
+  - `PUT /api/v1/leave-subtypes/{leave_subtype_id}`
+  - `DELETE /api/v1/leave-subtypes/{leave_subtype_id}`
+
+## Leave Policy Placeholder Endpoints (BL-013)
+- API (HR/Admin only):
+  - `GET /api/v1/leave-policies`
+  - `GET /api/v1/leave-policies?leave_type_id={leave_type_id}&leave_subtype_id={leave_subtype_id}`
+  - `POST /api/v1/leave-policies`
+  - `GET /api/v1/leave-policies/{leave_policy_id}`
+  - `PUT /api/v1/leave-policies/{leave_policy_id}`
+  - `DELETE /api/v1/leave-policies/{leave_policy_id}`
 
 
 ## Profile and Account Status Endpoints (BL-009)
