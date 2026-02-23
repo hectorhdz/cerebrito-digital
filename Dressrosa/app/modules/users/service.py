@@ -1,13 +1,19 @@
-﻿"""User management service for HR/Admin CRUD operations."""
+﻿"""User management service for HR/Admin CRUD and role assignment operations."""
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.models.role import Role
 from app.models.user import User
+from app.models.user_role import UserRole
 from app.modules.auth.security import hash_password
 
 
 class UserAlreadyExistsError(Exception):
+    pass
+
+
+class RoleNotFoundError(Exception):
     pass
 
 
@@ -16,9 +22,28 @@ def list_users(db: Session) -> list[User]:
     return list(db.execute(stmt).scalars().all())
 
 
+def list_roles(db: Session) -> list[Role]:
+    stmt = select(Role).order_by(Role.name.asc())
+    return list(db.execute(stmt).scalars().all())
+
+
 def get_user(db: Session, user_id: str) -> User | None:
     stmt = select(User).where(User.id == user_id)
     return db.execute(stmt).scalar_one_or_none()
+
+
+def get_user_roles(db: Session, user_id: str) -> list[Role]:
+    stmt = (
+        select(Role)
+        .join(UserRole, UserRole.role_id == Role.id)
+        .where(UserRole.user_id == user_id)
+        .order_by(Role.name.asc())
+    )
+    return list(db.execute(stmt).scalars().all())
+
+
+def get_user_role_names(db: Session, user_id: str) -> list[str]:
+    return [role.name for role in get_user_roles(db, user_id)]
 
 
 def _ensure_unique_fields(db: Session, username: str, email: str, exclude_user_id: str | None = None) -> None:
@@ -94,5 +119,45 @@ def delete_user(db: Session, user_id: str) -> bool:
         return False
 
     db.delete(user)
+    db.commit()
+    return True
+
+
+def assign_role_to_user(db: Session, user_id: str, role_name: str) -> bool:
+    user = get_user(db, user_id)
+    if user is None:
+        return False
+
+    role = db.execute(select(Role).where(Role.name == role_name)).scalar_one_or_none()
+    if role is None:
+        raise RoleNotFoundError(f"Role '{role_name}' not found")
+
+    existing = db.execute(
+        select(UserRole).where(UserRole.user_id == user_id, UserRole.role_id == role.id)
+    ).scalar_one_or_none()
+    if existing is not None:
+        return True
+
+    db.add(UserRole(user_id=user_id, role_id=role.id))
+    db.commit()
+    return True
+
+
+def remove_role_from_user(db: Session, user_id: str, role_name: str) -> bool:
+    user = get_user(db, user_id)
+    if user is None:
+        return False
+
+    role = db.execute(select(Role).where(Role.name == role_name)).scalar_one_or_none()
+    if role is None:
+        raise RoleNotFoundError(f"Role '{role_name}' not found")
+
+    mapping = db.execute(
+        select(UserRole).where(UserRole.user_id == user_id, UserRole.role_id == role.id)
+    ).scalar_one_or_none()
+    if mapping is None:
+        return True
+
+    db.delete(mapping)
     db.commit()
     return True

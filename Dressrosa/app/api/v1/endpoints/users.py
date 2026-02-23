@@ -1,4 +1,4 @@
-﻿"""User API endpoints for HR/Admin user CRUD."""
+﻿"""User API endpoints for HR/Admin user CRUD and role assignment management."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
@@ -7,11 +7,16 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db_session
 from app.modules.auth.dependencies import require_api_roles
 from app.modules.users.service import (
+    RoleNotFoundError,
     UserAlreadyExistsError,
+    assign_role_to_user,
     create_user,
     delete_user,
     get_user,
+    get_user_role_names,
+    list_roles,
     list_users,
+    remove_role_from_user,
     update_user,
 )
 
@@ -34,12 +39,21 @@ class UserUpdateRequest(BaseModel):
     active: bool
 
 
+class UserRoleAssignRequest(BaseModel):
+    role_name: str = Field(min_length=2, max_length=50)
+
+
 class UserResponse(BaseModel):
     id: str
     username: str
     email: EmailStr
     full_name: str
     active: bool
+    roles: list[str]
+
+
+class RoleResponse(BaseModel):
+    name: str
 
 
 @router.get("", response_model=list[UserResponse])
@@ -55,9 +69,18 @@ def api_list_users(
             email=user.email,
             full_name=user.full_name,
             active=user.active,
+            roles=get_user_role_names(db, user.id),
         )
         for user in users
     ]
+
+
+@router.get("/roles", response_model=list[RoleResponse])
+def api_list_roles(
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> list[RoleResponse]:
+    return [RoleResponse(name=role.name) for role in list_roles(db)]
 
 
 @router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -84,6 +107,7 @@ def api_create_user(
         email=user.email,
         full_name=user.full_name,
         active=user.active,
+        roles=get_user_role_names(db, user.id),
     )
 
 
@@ -103,6 +127,7 @@ def api_get_user(
         email=user.email,
         full_name=user.full_name,
         active=user.active,
+        roles=get_user_role_names(db, user.id),
     )
 
 
@@ -135,6 +160,7 @@ def api_update_user(
         email=user.email,
         full_name=user.full_name,
         active=user.active,
+        roles=get_user_role_names(db, user.id),
     )
 
 
@@ -147,3 +173,61 @@ def api_delete_user(
     deleted = delete_user(db, user_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+
+@router.post("/{user_id}/roles", response_model=UserResponse)
+def api_assign_role(
+    user_id: str,
+    payload: UserRoleAssignRequest,
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> UserResponse:
+    try:
+        ok = assign_role_to_user(db, user_id=user_id, role_name=payload.role_name)
+    except RoleNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+
+    if not ok:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    user = get_user(db, user_id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        full_name=user.full_name,
+        active=user.active,
+        roles=get_user_role_names(db, user.id),
+    )
+
+
+@router.delete("/{user_id}/roles/{role_name}", response_model=UserResponse)
+def api_remove_role(
+    user_id: str,
+    role_name: str,
+    _: object = Depends(require_api_roles("hr", "admin")),
+    db: Session = Depends(get_db_session),
+) -> UserResponse:
+    try:
+        ok = remove_role_from_user(db, user_id=user_id, role_name=role_name)
+    except RoleNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+
+    if not ok:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    user = get_user(db, user_id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        full_name=user.full_name,
+        active=user.active,
+        roles=get_user_role_names(db, user.id),
+    )
