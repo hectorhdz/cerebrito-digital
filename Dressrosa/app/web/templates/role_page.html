@@ -1,0 +1,10 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <h1>{{ title }}</h1>
+  <p>Welcome, <strong>{{ user.full_name }}</strong>.</p>
+  <p>You are authorized for the <code>{{ role_name }}</code> portal.</p>
+  <p><a href="/">Back to home</a></p>
+</section>
+{% endblock %}
