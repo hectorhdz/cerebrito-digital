@@ -1,3 +1,3 @@
-﻿from app.web.endpoints import home
+﻿from app.web.endpoints import auth, home
 
-__all__ = ["home"]
+__all__ = ["home", "auth"]

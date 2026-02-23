@@ -1,1 +1,1 @@
-﻿"""Module placeholder for future auth domain logic."""
+﻿"""Module placeholder for authentication domain logic."""

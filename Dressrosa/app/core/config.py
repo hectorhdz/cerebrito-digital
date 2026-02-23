@@ -19,6 +19,9 @@ class Settings:
     api_v1_prefix: str
     database_url: str
     log_level: str
+    secret_key: str
+    access_token_expire_minutes: int
+    session_cookie_name: str
 
 
 def _parse_bool(value: str | None, default: bool = False) -> bool:
@@ -56,6 +59,9 @@ def get_settings() -> Settings:
         api_v1_prefix=os.getenv("API_V1_PREFIX", "/api/v1"),
         database_url=os.getenv("DATABASE_URL", "sqlite:///./dressrosa.db"),
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
+        secret_key=os.getenv("SECRET_KEY", "dressrosa-dev-secret-key-change-me"),
+        access_token_expire_minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "120")),
+        session_cookie_name=os.getenv("SESSION_COOKIE_NAME", "dressrosa_session"),
     )
 
 
