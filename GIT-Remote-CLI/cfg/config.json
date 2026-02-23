@@ -1,0 +1,15 @@
+{
+  "repo": {
+    "remote_name": "origin",
+    "remote_url": "https://gitlab.com/your-group/your-project.git",
+    "default_branch": "main"
+  },
+  "auth": {
+    "use_token_auth": false,
+    "access_token": "",
+    "access_token_env": "GITLAB_TOKEN"
+  },
+  "git": {
+    "executable": "git"
+  }
+}
