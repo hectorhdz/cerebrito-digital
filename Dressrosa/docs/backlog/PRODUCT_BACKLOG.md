@@ -6,7 +6,7 @@
 | BL-002 | Platform Foundation | Data layer bootstrap | Configure SQLAlchemy models and Alembic migration baseline. | Sprint 1 | Completed | Added SQLAlchemy models + Alembic baseline migration |
 | BL-003 | Platform Foundation | App configuration | Implement configuration, logging, and environment separation. | Sprint 1 | Completed | Added env-separated settings, logging config, and env files |
 | BL-004 | Platform Foundation | Auth primitives | Add password hashing, web session auth, and API token auth foundations. | Sprint 2 | Completed | Added bcrypt hashing, JWT (2h), API auth endpoints, and web session login/logout |
-| BL-005 | Platform Foundation | Initial seed data | Seed default roles and initial admin user. | Sprint 2 | Planned | Not started |
+| BL-005 | Platform Foundation | Initial seed data | Seed default roles and initial admin user. | Sprint 2 | Completed | Added idempotent seed script with default admin and role assignment |
 | BL-006 | Users and Access | User CRUD | User CRUD for HR/Admin. | Sprint 3 | Planned | Not started |
 | BL-007 | Users and Access | Role assignment | Role assignment management. | Sprint 3 | Planned | Not started |
 | BL-008 | Users and Access | Org mapping | Manager-employee relationship management. | Sprint 3 | Planned | Not started |

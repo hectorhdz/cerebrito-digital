@@ -4,7 +4,7 @@ HR management web app for leave requests, attendance tracking, and manager appro
 
 ## Sprint Status
 - Sprint 1: BL-001, BL-002, BL-003 implemented.
-- Sprint 2: BL-004 implemented (BL-010 pending).
+- Sprint 2: BL-004 and BL-005 implemented (BL-010 pending).
 
 ## Documentation
 - Project plan: `docs/PROJECT_PLAN.md`
@@ -51,15 +51,24 @@ Run all commands from repository root (`c:\Users\webit\Documents\Github\cerebrit
    - `$env:ENVIRONMENT = "production"`
 8. Apply database migrations:
    - `alembic upgrade head`
-9. Run the application:
+9. Seed default data (roles + admin):
+   - `py -3 scripts/seed_initial_data.py`
+10. Run the application:
    - `uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`
-10. Open the app in browser:
+11. Open the app in browser:
    - `http://127.0.0.1:8000/`
-11. API health checks:
+12. API health checks:
    - `http://127.0.0.1:8000/api/v1/health`
    - `http://127.0.0.1:8000/api/v1/health/db`
-12. Run tests:
+13. Run tests:
    - `pytest`
+
+## Default Seed Credentials (BL-005)
+- Username: `admin`
+- Email: `admin@dressrosa.local`
+- Password: `Test123`
+
+Change this password immediately in non-local environments.
 
 ## Auth Endpoints (BL-004)
 - API token login: `POST /api/v1/auth/token` with form fields `username` and `password`

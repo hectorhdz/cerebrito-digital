@@ -10,9 +10,13 @@ This file tracks test cases that were executed, including outcome and context.
 | TC-BL003-002 | Production env selection test | Validate that `production` environment resolves `.env.prod`. | `py -3 -m pytest Dressrosa/tests -q` | Blocked | Not yet runnable in current environment because `pytest` is not installed. |
 | TC-BL004-001 | Password hashing test | Validate password hashing and verification round-trip behavior. | `py -3 -m pytest Dressrosa/tests -q` | Blocked | Not yet runnable in current environment because `pytest` is not installed. |
 | TC-BL004-002 | JWT issuance test | Validate issued token includes subject and 2-hour expiry (`7200` seconds). | `py -3 -m pytest Dressrosa/tests -q` | Blocked | Not yet runnable in current environment because `pytest` is not installed. |
+| TC-BL005-001 | Seed roles/admin script | Validate seed script creates default roles and initial admin user idempotently. | `py -3 scripts/seed_initial_data.py` | Not Run | Pending local execution after migrations are applied. |
 
 ## Notes
 - Automated tests exist at `Dressrosa/tests/test_health.py`, `Dressrosa/tests/test_config.py`, and `Dressrosa/tests/test_auth_security.py`.
+- Seed script exists at `Dressrosa/scripts/seed_initial_data.py`.
 - After creating and activating a virtual environment and installing `Dressrosa/requirements.txt`, rerun:
   - `py -3 -m pytest Dressrosa/tests -q`
-- Update this log with final test outcomes (`Passed`/`Failed`) after rerun.
+- After applying migrations, run seed:
+  - `py -3 scripts/seed_initial_data.py`
+- Update this log with final outcomes (`Passed`/`Failed`) after rerun.
