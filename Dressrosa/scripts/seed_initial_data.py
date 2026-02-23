@@ -12,7 +12,7 @@ from app.models.role import Role
 from app.models.user import User
 from app.models.user_role import UserRole
 from app.modules.auth.security import hash_password
-from app.modules.leaves.service import ensure_default_leave_types
+from app.modules.leaves.service import ensure_default_leave_subtypes, ensure_default_leave_types
 
 DEFAULT_ROLES = ["employee", "manager", "hr", "admin"]
 DEFAULT_ADMIN_USERNAME = "admin"
@@ -64,6 +64,7 @@ def seed() -> None:
         admin_user = ensure_admin_user(db)
         ensure_user_role(db, admin_user.id, roles["admin"].id)
         ensure_default_leave_types(db)
+        ensure_default_leave_subtypes(db)
         db.commit()
 
         print("Seed completed successfully.")

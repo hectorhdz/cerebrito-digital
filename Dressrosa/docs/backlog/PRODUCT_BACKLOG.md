@@ -31,7 +31,7 @@
 | Backlog ID | Epic | Feature | Description | Status | Notes |
 |---|---|---|---|---|---|
 | BL-011 | Leave Taxonomy and Policies | Leave types | Leave type management (`paid`, `unpaid`, `holiday_substitution`). | Completed | REST CRUD + seed defaults |
-| BL-012 | Leave Taxonomy and Policies | Leave subtypes | Leave subtype management for scalable subtype sets. | Planned | Config-driven |
+| BL-012 | Leave Taxonomy and Policies | Leave subtypes | Leave subtype management for scalable subtype sets. | Completed | REST CRUD + type-linked seed defaults |
 | BL-013 | Leave Taxonomy and Policies | Policy model | Policy placeholders for entitlement/accrual rules. | Planned | Extensible model |
 | BL-014 | Leave Taxonomy and Policies | Subtype validation | Validation rules per subtype. | Planned | Rule hooks |
 | BL-015 | Leave Requests and Approvals | Leave submission | Employee leave request submission. | Planned | Not started |
