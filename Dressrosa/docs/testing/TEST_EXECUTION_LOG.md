@@ -12,6 +12,7 @@ This file tracks test cases that were executed, including outcome and context.
 | TC-BL004-002 | JWT issuance test | Validate issued token includes subject and 2-hour expiry (`7200` seconds). | `python -m pytest tests -q` | Blocked | Not yet runnable in current environment because dependencies were not fully installed. |
 | TC-BL005-001 | Seed roles/admin script | Validate seed script creates default roles and initial admin user idempotently. | `python -m scripts.seed_initial_data` | Not Run | Pending local execution after migrations are applied. |
 | TC-BL010-001 | Role hierarchy expansion test | Validate admin/hr/manager inheritance logic for role guards. | `python -m pytest tests/test_role_guards.py -q` | Not Run | Added tests; pending execution in fully prepared local environment. |
+| TC-BL006-001 | User service CRUD wiring test | Validate BL-006 user CRUD service functions are present and import correctly. | `python -m pytest tests/test_user_crud.py -q` | Not Run | Added test scaffold; pending execution in local environment. |
 
 ## Notes
 - Automated tests exist in `tests/`.
