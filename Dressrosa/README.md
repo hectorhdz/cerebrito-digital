@@ -1,18 +1,13 @@
 ﻿# Dressrosa
 
-HR management web application focused on leave management, attendance tracking, and role-based approvals.
+HR management web app for leave requests, attendance tracking, and manager approvals.
 
-## Current Status
-- Phase: Planning baseline (no application code yet)
-- Repository location: `Dressrosa/`
+## Documentation
+- Project plan: `docs/PROJECT_PLAN.md`
+- Backlog: `docs/backlog/PRODUCT_BACKLOG.md`
+- Sprint roadmap: `docs/backlog/SPRINT_ROADMAP.md`
+- UML diagrams (rendered images): `docs/DIAGRAMS.md`
 
-## Planning Documents
-- `docs/PROJECT_PLAN.md`
-- `docs/architecture/system_context.puml`
-- `docs/architecture/component_diagram.puml`
-- `docs/architecture/domain_model.puml`
-- `docs/architecture/er_diagram.puml`
-- `docs/workflows/leave_request_sequence.puml`
-- `docs/workflows/attendance_edit_sequence.puml`
-- `docs/backlog/PRODUCT_BACKLOG.md`
-- `docs/backlog/SPRINT_ROADMAP.md`
+## Notes About Diagram Rendering
+The rendered diagrams in `docs/DIAGRAMS.md` use the PlantUML proxy service and fetch source from this repository.
+If the default branch changes, update the branch name in diagram URLs.
