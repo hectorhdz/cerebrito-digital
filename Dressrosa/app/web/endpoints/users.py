@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
@@ -102,7 +102,7 @@ def users_assign_role(
     role_name: str = Form(...),
     current_user=Depends(require_web_roles("hr", "admin")),
     db: Session = Depends(get_db_session),
-) -> HTMLResponse | RedirectResponse:
+ ) -> Response:
     try:
         ok = assign_role_to_user(db, user_id=user_id, role_name=role_name)
     except RoleNotFoundError as exc:
@@ -131,7 +131,7 @@ def users_remove_role(
     role_name: str,
     current_user=Depends(require_web_roles("hr", "admin")),
     db: Session = Depends(get_db_session),
-) -> HTMLResponse | RedirectResponse:
+ ) -> Response:
     try:
         ok = remove_role_from_user(db, user_id=user_id, role_name=role_name)
     except RoleNotFoundError as exc:
@@ -151,3 +151,4 @@ def users_remove_role(
         )
 
     return RedirectResponse(url="/users", status_code=303)
+
