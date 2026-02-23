@@ -11,7 +11,7 @@
 | BL-007 | Users and Access | Role assignment | Role assignment management. | Sprint 3 | Planned | Not started |
 | BL-008 | Users and Access | Org mapping | Manager-employee relationship management. | Sprint 3 | Planned | Not started |
 | BL-009 | Users and Access | Profile endpoints | Profile and account status endpoints. | Sprint 3 | Planned | Not started |
-| BL-010 | Users and Access | Authorization guards | Role guards for web routes and REST endpoints. | Sprint 2 | Planned | Not started |
+| BL-010 | Users and Access | Authorization guards | Role guards for web routes and REST endpoints. | Sprint 2 | Completed | Added hierarchical role guards for API and web routes with verification endpoints |
 | BL-011 | Leave Taxonomy and Policies | Leave types | Leave type management (`paid`, `unpaid`, `holiday_substitution`). | Sprint 4 | Planned | Config-driven |
 | BL-012 | Leave Taxonomy and Policies | Leave subtypes | Leave subtype management for scalable subtype sets. | Sprint 4 | Planned | Config-driven |
 | BL-013 | Leave Taxonomy and Policies | Policy model | Policy placeholders for entitlement/accrual rules. | Sprint 4 | Planned | Extensible model |

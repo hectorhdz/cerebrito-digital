@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db_session
 from app.modules.auth.dependencies import get_current_api_user
 from app.modules.auth.security import create_access_token
-from app.modules.auth.service import authenticate_user
+from app.modules.auth.service import authenticate_user, get_user_role_names
 
 router = APIRouter(prefix="/auth")
 
@@ -26,11 +26,15 @@ def login_for_access_token(
 
 
 @router.get("/me")
-def read_current_user(user=Depends(get_current_api_user)) -> dict[str, str | bool]:
+def read_current_user(
+    user=Depends(get_current_api_user),
+    db: Session = Depends(get_db_session),
+) -> dict[str, str | bool | list[str]]:
     return {
         "id": user.id,
         "username": user.username,
         "full_name": user.full_name,
         "email": user.email,
         "active": user.active,
+        "roles": sorted(get_user_role_names(db, user.id)),
     }

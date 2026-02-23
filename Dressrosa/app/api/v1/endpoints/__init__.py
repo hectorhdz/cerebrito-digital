@@ -1,3 +1,3 @@
-﻿from app.api.v1.endpoints import auth, health
+﻿from app.api.v1.endpoints import access, auth, health
 
-__all__ = ["health", "auth"]
+__all__ = ["health", "auth", "access"]
